@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Registrarse</title>
+</head>
+<body>
+    <div class="contenedor-form registrar">
+         <img class="mx-auto h-50 w-auto" src="imgen.svg" alt="Your Company">
+        <h2>Registrarse</h2>
+        <form action="registrar.php" method="POST">
+        <input type="text" name="nombre completo" placeholder="Nombre Completo"required>
+        <input type="text" name="direccion" placeholder="Dirección"required>
+            <div class="flex-container">
+                <select name="tipo_documento" id="tipo_documento" required>
+                    <option value="" disabled selected>T.D</option>
+                    <option value="cc">Cédula de Ciudadanía</option>
+                    <option value="ppt">Permiso por Protección Temporal</option>
+                    <option value="cedula_extranjeria">Cédula de Extranjería</option>
+                </select>
+                 <input type="text" name="numero_documento" class="numero_documento" placeholder="Número de Documento" required>
+            </div>
+          <input type="text" name="numero de celular" placeholder="Numero de Celular"required>
+          <input type="text" name="correo electronico" placeholder="Correo electronico"required>
+          <input type="password" name="contrasena" placeholder="Contraseña"required>
+          <input type="submit" value="Crear Cuenta">
+        </form>
+    </div>
+</body>
+</html>
