@@ -1,38 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="index.css" />
-    <title>Registrarse</title>
-  </head>
-  <body>
-    <div class="contenedor-form registrar">
-      <img class="mx-auto h-50 w-auto" src="imgen.svg" alt="Your Company" />
-      <h2>Registrarse</h2>
-      <form action="registrar.php" method="POST">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/registroCliente.css" />
+  <script src="js/CreateCliente.js"></script>
+  <title>Registrarse</title>
+</head>
+
+<body>
+  <div class="contenedor-form registrar">
+
+    <div class="cont-form">
+      <div class="head-form">
+        <h2 onclick="crearUser()">Registrarse</h2>
+        <img class="style-img" src="https://media-tienda-esquina-6546601.s3.amazonaws.com/logo.svg" alt="Your Company" />
+      </div>
+      <form action="">
         <input type="text" name="nombre" placeholder="Nombre" required />
         <input type="text" name="apellido" placeholder="Apellido" required />
-        <input
-          type="text"
-          name="correo electronico"
-          placeholder="Correo electronico"
-          required
-        />
-        <input
-          type="password"
-          name="contrasena"
-          placeholder="Contraseña"
-          required
-        />
-        <input
-        type="password"
-        name="confirmar_contrasena"
-        placeholder="Confirma tu contraseña"
-        required
-      />
+        <input type="text" name="correo electronico" placeholder="Correo electronico" required />
+        <input type="password" name="contrasena" placeholder="Contraseña" required />
+        <input type="password" name="confirmar_contrasena" placeholder="Confirma tu contraseña" required />
+        <input type="submit" value="Crear Cuenta"/>
+      </form>
+    </div>
+
+    <div class="cont-codigo">
+      <div class="messajeCorreo">
+        te enviamos un codigo a tu correo, ingresalo para continuar:
+      </div>
+      <form action="">
+        <input type="number" id="codigo" class="input-number" placeholder="000000" maxlength="6" oninput="limitarLongitud(this)" required />
         <input type="submit" value="Crear Cuenta" />
       </form>
     </div>
-  </body>
+
+  </div>
+</body>
+
 </html>

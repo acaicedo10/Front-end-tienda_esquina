@@ -1,0 +1,136 @@
+* {
+  margin: 0;
+  padding: 0;
+
+}
+:root{
+  --color-1:rgb(71, 164, 192);
+  --color-2: rgb(255, 255, 255);
+  --color-texto-1: rgb(0, 42, 69);
+  --color-texto-2: white;
+  --sombra: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  --sombra-4: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px inset;
+  --sombra-2: rgba(255, 255, 255, 0.823) 0px 3px 6px, rgba(255, 255, 255, 0.823) 0px 3px 6px;
+  --sombra-3: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+
+html{
+    background: url("../img/fondo_tenda.svg");
+    background-size: 100%;
+
+  }
+  body{
+    font-family: Arial, sans-serif, Claibri, verdana;
+  }
+  .contenedor-form{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    transition: justify-content 0.5s ease;
+    height: 100vh;
+    
+  
+  }
+  .cont-form{
+    display: flex;
+    flex-direction: column;
+    width: 22em;
+    border: 2px solid var(--color-2);
+    border-radius: 20px;
+    background-color: transparent;
+    backdrop-filter: blur(3px);
+    box-shadow: var(--sombra);
+   
+  }
+  .head-form{
+    display: flex;
+    align-items: center;
+    border-radius: 17px 17px 0px 0px;
+    padding: 10px 10px 0px 10px;
+    border: 2px solid var(--color-2);
+    flex-direction: column;
+    background-color: var(--color-2);
+    color: var(--color-texto-1);
+  }
+  .style-img{
+    width: 150px;
+  }
+  form{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 10px;
+  }
+  input{
+    font-size: 20px;
+    font-weight: 600;
+    padding: 5px 5px 5px 10px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    color: var(--color-texto-1);
+    box-shadow: var(--sombra-4);
+  }
+  input[type="submit"]{
+    border-radius: 20px;
+    display: flex;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 5px;
+    background-color: var(--color-1);
+    outline: none;
+    color: var(--color-texto-1);
+    border: 2px solid var(--color-texto-1);
+    cursor: pointer;
+    box-shadow: var(--sombra);
+    transition: .5s ease;
+  }
+  input[type="submit"]:hover{
+    transform: translatey(-10%);
+    background-color: var(--color-2);
+    box-shadow: var(--sombra-2);
+  }
+  
+  .reenviar-checkbox{
+    display: flex;
+    gap: .5em;
+    align-items: center;
+  
+  }
+  input[type="checkbox"]{
+    border: none;
+    outline: none;
+    background-color: red;
+    transform: scale(1.4);
+    margin-left: 10px;
+  }
+  
+  span{
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-texto-1);
+  }
+
+
+  /* Codigo codigo */
+  .cont-codigo{
+    display: none;
+    border-radius: 20px;
+    flex-direction: column;
+    text-align: center;
+    background-color: transparent;
+    border: 2px solid var(--color-2);
+  }
+  .cont-codigo::placeholder{
+    text-align: center;
+  }
+  .messajeCorreo{
+    display: flex;
+    text-align: justify;
+    background-color: var(--color-2);
+    width: 20em;
+    padding: 20px 20px 10px 20px;
+    border-radius:20px 20px 0px 0px;
+  }
+  

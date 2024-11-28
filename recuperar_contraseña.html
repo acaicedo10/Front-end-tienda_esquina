@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="css/recuperar-pass.css">
     <title>Recuperar Contraseña</title>
 </head>
+
 <body>
     <div class="contenedor-form">
-        <img class="mx-auto h-50 w-auto" src="imgen.svg" alt="Your Company">
-        <h2>Recuperar Contraseña</h2>
-        <form action="enviar_recuperacion.php" method="POST">
-            <input type="email" name="correo_electronico" placeholder="Correo Electrónico" required>
-            <label class="reenviar-checkbox">
-                <input type="checkbox" name="reenviar">
-                <span>Reenviar</span>
-            </label>
-            <input type="submit" value="Enviar Código">
-        </form>
+        <div class="cont-form">
+            <div class="head-form"> 
+                <h2>Recuperar Contraseña</h2>
+                <img class="style-img" src="https://media-tienda-esquina-6546601.s3.amazonaws.com/logo.svg" alt="Your Company">
+               
+            </div>
+
+            <form action="">
+                <input type="email" name="correo_electronico" placeholder="Correo electrónico" required>
+                <input type="submit" value="Enviar Código">
+            </form>
+        </div>
+        
     </div>
 </body>
+
 </html>
