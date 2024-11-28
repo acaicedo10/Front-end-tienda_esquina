@@ -10,6 +10,17 @@ function InicioReload(){
    
 }
 
+
+// CIERRA SESION
+
+function cerrarSesion(){
+  document.querySelector('.OpnLog').style.display = "flex";
+  document.querySelector('.PrfIcon').style.display = "none";
+
+}
+//FIN INICIA Y CIERRA SESION
+
+
 function AgregarCarrito() {
     const cantidadSpan = document.querySelector(".cantidad-car");
     if (cantidadSpan.textContent.trim() === ""){
@@ -30,6 +41,8 @@ function AgregarCarrito() {
     }
   }
 
+  // MODALES FUNCIONES
+
 function OpenContLogin(){
     document.querySelector('.cont-login-user').style.display = "flex";
 }
@@ -38,6 +51,54 @@ function CloseLogin(){
     document.querySelector('.cont-login-user').style.display = "none";
 }
 
+
+
+function OpenCarShop(){
+  document.querySelector('.cont-perfil-user').style.display = "none";
+  document.querySelector('.cont-carrito-modal').style.display = "flex";
+  document.querySelector('.cont-estructura').style.pointerEvents = "none";
+  document.querySelector('.cont-carrito-modal').style.pointerEvents = "all";
+
+}
+
+function CloseCarShop(){
+  document.querySelector('.cont-carrito-modal').style.display = "none";
+  document.querySelector('.cont-estructura').style.pointerEvents = "all";
+}
+
+
+
+
 function OpenUserOptions(){
   document.querySelector('.cont-perfil-user').style.display = "flex";
+  document.querySelector('.cont-carrito-modal').style.display = "none";
+  document.querySelector('.cont-estructura').style.pointerEvents = "none";
+  document.querySelector('.cont-perfil-user').style.pointerEvents = "all";
 }
+
+function CloseUserOptions(){
+  document.querySelector('.cont-perfil-user').style.display = "none";
+  document.querySelector('.cont-estructura').style.pointerEvents = "all";
+}
+
+
+
+
+// CONTROLADOR DE CANTIDAD DE PRONDUCTOS
+
+function incrementarCantidad() {
+  const inputCantidad = document.getElementById("cantidad");
+  let cantidadActual = parseInt(inputCantidad.value, 10);
+  inputCantidad.value = cantidadActual + 1;
+}
+
+function decrementarCantidad() {
+  
+  const inputCantidad = document.getElementById("cantidad");
+  let cantidadActual = parseInt(inputCantidad.value, 10);
+
+  if (cantidadActual > 1) {
+    inputCantidad.value = cantidadActual - 1;
+  }
+}
+

@@ -131,14 +131,15 @@ border-radius: 0px 20px 20px 0px;
   border-radius: 100%;
   width: 15px;
   height: 15px;
-  padding: 2px;
+  padding: 5px;
   color: white;
   justify-content: center;
   align-items: center;
-  font-size: 10px;
+  font-size: 15px;
+  font-weight: 700;
   position: absolute;
-  margin-top: -15px;
-  margin-left:-20px ;
+  margin-top: -20px;
+  margin-left:-25px ;
 }
 /* FIN PRIMERA FILA ENCABEZADO */
 
@@ -207,7 +208,7 @@ display: none;
   flex-direction: column;
   padding: .5em;
   background: #a2cbd266;
-  width: 11.5em;
+  width: 14em;
   border-radius: 10px;
   overflow: visible;
   box-shadow: var(--sombra);
@@ -217,6 +218,7 @@ display: none;
 
  }
  .card-img {
+  display: flex;
   background-color: var(--color-1);
   height: 10em;
   overflow: hidden;
@@ -225,7 +227,10 @@ display: none;
   box-shadow: var(--sombra);
   transition: .3s ease;
  }
+.card-img img{
+width: 100%;
 
+}
  .card-info {
   padding-top: 5px;
 }
@@ -238,17 +243,29 @@ display: none;
  .card-footer {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   padding-top: 10px;
+  gap: .5em;
+  flex-wrap: wrap;
   border-top: 1px solid #ddd;
  }
 
+ .right-footer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: .5em;
+
+ }
  /*Text*/
  .text-title {
   font-weight: 900;
   font-size: 1.2em;
+  align-self: flex-start;
   line-height: 1.5;
+  
  }
 
  .text-body {
@@ -256,11 +273,54 @@ display: none;
   padding-bottom: 10px;
  }
 
+ .quantity-controls{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5em;
+ }
+
+
+ .quantity-input{
+  width: 40px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+  text-align: center;
+  padding: 5;
+  font-size: 15px;
+  font-weight: 800;
+  outline: none;
+  background-color: transparent;
+
+ }
+
+ .btn-control-sr{
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  font-weight: 900;
+  border: none;
+  color: var(--color-2);
+  background-color: var(--color-3);
+  border-radius: 5px;
+  cursor: pointer;
+ }
+ .btn-increment{
+  border: 1px solid var(--color-texto-1);
+  color: var(--color-2);
+  background-color: var(--color-1);
+ }
+
+
  /*Button*/
  .card-button {
   border: 1px solid #252525;
   display: flex;
   padding: .3em;
+  align-self: flex-end;
+  justify-self: flex-end;
   cursor: pointer;
   border-radius: 50px;
   transition: .3s ease-in-out;
@@ -422,17 +482,29 @@ display: none;
   flex-direction: column;
   align-items: center;
   position: absolute;
+  z-index: 2;
   width: 25em;
   gap: 1em;
   padding: 20px;
   background-color: transparent;
-  border: 1px solid var(--color-texto-1);
+  border: 2px solid var(--color-texto-1);
   backdrop-filter: blur(7px);
   box-shadow: var(--sombra);
-  margin-left: -24em;
+  margin-left: -28em;
   margin-top: 1em;
   border-radius: 20px 0px 20px 20px;
   height: max-content;
+}
+.Euser{
+  position: absolute;
+  font-size: 26px;
+  color: var(--color-3);
+  background-color: var(--color-2);
+  border-radius: 100%;
+  margin-right: -19em;
+  margin-top: -2em;
+  cursor: pointer;
+  transform: .5s ease;
 }
 .cont-data-user{
   display: flex;
@@ -476,4 +548,189 @@ display: none;
   color: var(--color-3);
 }
 
-/* TERMINA MODAL OPCIONES Y CERRAR SESION */
+
+
+/* TERMINA MODAL OPCIONES Y CERRAR SESION *
+
+
+
+
+/* MODAL CERRAR SESSION Y OPCIONES */
+.cont-carrito-modal{
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  z-index: 2;
+  width: 50em;
+  gap: 1em;
+  padding: 10px;
+  background-color: transparent;
+  border: 3px solid var(--color-2);
+  backdrop-filter: blur(7px);
+  box-shadow: var(--sombra);
+  margin-left: -64.9em;
+  margin-top: 1em;
+  border-radius: 20px 0px 20px 20px;
+  height: max-content;
+}
+.Mcarrito{
+  position: absolute;
+  font-size: 26px;
+  color: var(--color-3);
+  background-color: var(--color-2);
+  border-radius: 100%;
+  margin-right: -34.6em;
+  margin-top: -1.7em;
+  cursor: pointer;
+  transform: .5s ease;
+}
+.cont-result-carrito{
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  align-self: flex-start;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--sombra);
+  color: var(--color-texto-1);
+
+}
+.encabezado-car{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 10px 10px 0px 0px;
+  align-items: center;
+  gap: .5em;
+  justify-content: center;
+  background-color: var(--color-2);
+  padding: 15px 0px 1px 0px;
+  box-shadow: var(--sombra);
+}
+.canastilla{
+  font-size: 35px;
+}
+
+.cont-car-pag{
+  display: flex;
+  gap: 1em;
+  width: 100%;
+}
+
+.table-enca-car{
+  display: flex;
+  font-size: 15px;
+  width: 100%;
+  font-weight: 800;
+
+}
+.datos-product{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 200;
+  width: 45%;
+}
+.cantidad-product{
+  display: flex;
+  justify-content: center;
+  width: 20%;
+  font-size: 13px;
+  font-weight: 200;
+}
+.precio-product{
+  display: flex;
+  justify-content: center;
+  width: 12%;
+  font-size: 13px;
+  font-weight: 200;
+}
+.cont-carrito-scroll{
+  display: flex;
+  width: 100%;
+  height: 20em;
+  overflow-y: scroll;
+  border-radius: 0px 0px 10px 10px;
+
+}
+.cont-carrito{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 10px;
+  gap: .6em;
+  height: max-content;
+}
+.carrito-card{
+  display: flex;
+  background-color: var(--color-2);
+  padding: 5px;
+  gap: .6em;
+  border-radius: 10px;
+  box-shadow: var(--sombra);
+}
+.img-producto-car{
+  width: 60px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--sombra);
+}
+.cont-name-descripcion{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .1em;
+  width: 40%;
+}
+.name-producto{
+  font-size: 17px;
+  font-weight: 700;
+}
+.descrip-producto{
+  font-size: 15px;
+}
+.cantidad-precio{
+  display: flex;
+  align-items: center;
+  gap: 2.5em;
+  width: 45%;
+}
+.Ncantidad{
+  font-size: 15px;
+  font-weight: 800;
+}
+.cont-precio-car{
+  display: flex;
+  gap: 1.5em;
+  align-items: center;
+}
+
+.valor-precio{
+  font-size: 18px;
+  font-weight: 600;
+
+}
+.basury{
+  color: var(--color-texto-1);
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.mensajeRespuesta{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.cont-pasarela{
+  display: flex;
+  width: 35%;
+  border-radius: 10px;
+  border: 1px solid;
+}

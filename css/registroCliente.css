@@ -16,10 +16,11 @@
 
 
 html{
-    background: url("../img/fondo_tenda.svg");
+    background: url("https://media-tienda-esquina-6546601.s3.us-east-2.amazonaws.com/fondo_interfaz.svg");
     background-size: 100%;
 
   }
+
   body{
     font-family: Arial, sans-serif, Claibri, verdana;
   }
@@ -110,6 +111,7 @@ html{
     font-size: 20px;
     font-weight: 600;
     color: var(--color-texto-1);
+  
   }
 
 

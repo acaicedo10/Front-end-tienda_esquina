@@ -7,7 +7,6 @@
   <title>Mi Proyecto Frontend</title>
   <link rel="stylesheet" href="css/styles.css" />
   <script src="https://kit.fontawesome.com/590a7c086c.js" crossorigin="anonymous"></script>
-  <script src="js/IndexScripts.js"></script>
 </head>
 
 <body>
@@ -16,7 +15,7 @@
       <div class="cont-filtro-name">
         <div class="cont-name-empresa" onclick="InicioReload()">
 
-          <img src="https://media-tienda-esquina-6546601.s3.amazonaws.com/logo.svg" width="110px" height="110px" alt="">
+          <img src="https://media-tienda-esquina-6546601.s3.amazonaws.com/logo.png" width="110px" height="110px" alt="">
         </div>
         <div class="cont-filtro">
 
@@ -26,31 +25,103 @@
           </button>
         </div>
         <div class="cont-perfil">
-          <button class="btn-options" onclick="AgregarCarrito()">
+          <button class="btn-options" onclick="OpenCarShop()">
+
+
             <span class="cantidad-car">
 
             </span>
             <i class="fa-solid fa-cart-shopping icon"></i>
           </button>
+          <!-- CONTENEDOR DE CARRITO MODAL -->
+
+          <div class="cont-carrito-modal">
+
+            <i class="fa-solid fa-circle-xmark Mcarrito" onclick="CloseCarShop()"></i>
+
+            <div class="cont-car-pag">
+              <div class="cont-result-carrito">
+                <div class="encabezado-car">
+                  <i class="fa-solid fa-basket-shopping canastilla"></i>
+                  <h3>Productos escogidos</h3>
+                  <div class="table-enca-car">
+                    <div class="datos-product">
+                      Datos del producto
+                    </div>
+                    <div class="cantidad-product">
+                      Cantidad
+                    </div>
+                    <div class="precio-product">
+                      Precio
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cont-carrito-scroll">
+                  <div class="cont-carrito">
+
+<!-- MENSAJE EN CASO DE QUE NO HAYA REGISTROS EN BD -->
+                    <div class="mensajeRespuesta">
+                      No has escogido ningun producto.
+                    </div>
+
+                    <!-- CONTENIDO GENERADO CON AJAX -->
+                    <div class="carrito-card">
+                      <img src="https://demo.innovacionfac.com/assets/uploads/1da773a7eae8c49d29b68c590057b9d5.jpg" class="img-producto-car" alt="">
+                      <div class="cont-name-descripcion">
+                        <div class="name-producto">
+                          Arroz Diana
+                        </div>
+                        <div class="descrip-producto">
+                          Bolsa 3000gr Unidad
+                        </div>
+                      </div>
+                      <div class="cantidad-precio">
+                        <div class="cantidad-productos">
+                          <span class="Ncantidad">1</span>
+                        </div>
+                        <div class="cont-precio-car">
+                          <span class="valor-precio">
+                            $3.2000 COP
+                          </span>
+                          <i class="fa-solid fa-trash basury"></i>
+                        </div>
+
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="cont-pasarela">
+
+              </div>
+            </div>
+          </div>
 
           <!-- BOTONES CONDICIONALES >> -->
-          <button class="btn-options" style="display: none;" onclick="OpenContLogin()">
+          <button class="btn-options OpnLog" style="display: none;" onclick="OpenContLogin()">
             <i class="fa-solid fa-right-to-bracket icon"></i>
           </button>
 
-          <button class="btn-options" onclick="OpenUserOptions()">
+          <button class="btn-options PrfIcon" onclick="OpenUserOptions()">
             <i class="fa-solid fa-user icon"></i>
           </button>
 
           <!-- CONTENEDOR DE PERFIL -->
           <div class="cont-perfil-user">
+
+            <i class="fa-solid fa-circle-xmark Euser" onclick="CloseUserOptions()"></i>
             <div class="cont-data-user">
               <i class="fa-solid fa-circle-user"></i>
               <div class="nameuser-text"> ALEXANDER CAICEDO OCORO PRIPRA</div>
             </div>
             <button class="btn-mdl-user" type="button">Ayuda y soporte <i class="fa-solid fa-circle-info"></i></button>
-            <button class="btn-mdl-user contra" type="button">Cerrar sesion <i
-                class="fa-solid fa-right-from-bracket"></i></button>
+            <button class="btn-mdl-user contra" onclick="cerrarSesion()" type="button">Cerrar sesion
+              <i class="fa-solid fa-right-from-bracket"></i></button>
           </div>
           <!-- BOTONES CONDICIONALES << -->
         </div>
@@ -87,13 +158,23 @@
             <span class="token-categ">
 
             </span>
-            <div class="card-img"><img src="img/carnes.png" alt=""></div>
+            <div class="card-img"><img src="https://demo.innovacionfac.com/assets/uploads/1da773a7eae8c49d29b68c590057b9d5.jpg" alt=""></div>
             <div class="card-info">
-              <p class="text-title">Arroz Diana </p>
+              <p class="text-title" onclick="mostrarCantidadActual()">Arroz Diana </p>
               <p class="text-body">Bolsa 3000gr unidad </p>
             </div>
             <div class="card-footer">
-              <span class="text-title precio">$3.200</span>
+              <div class="right-footer">
+              <span class="text-title precio">$3.200 COP</span>
+              <div class="quantity-controls">
+                <button type="button" onclick="decrementarCantidad()" class="btn-decrement btn-control-sr">-</button>
+                <div class="cont-cantidad-input cci">
+                  <input type="text" id="cantidad" class="quantity-input" value="1" min="1" max="20" readonly />
+                </div>
+                <button type="button" onclick="incrementarCantidad()" class="btn-increment btn-control-sr">+</button>
+              </div>
+              </div>
+
               <div class="card-button" onclick="AgregarCarrito()">
                 <svg class="svg-icon" viewBox="0 0 20 20">
                   <path
@@ -107,6 +188,7 @@
                   </path>
                 </svg>
               </div>
+
             </div>
           </div>
 
@@ -142,6 +224,7 @@
   </div>
 
 
+  <script src="js/IndexScripts.js"></script>
 
 </body>
 
