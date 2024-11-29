@@ -114,108 +114,7 @@ const obtenerDatosUsuario = () => {
       // Variables del carrito de compras del usuario logueado:
       const pedidoUsuario = response.data.cart.items; // Arreglo del pedido del usuario, osea los productos que piensa comprar el usuario
 
-      if (pedidoUsuario.length > 0) {
-        // AGREGO LA CANTIDAD DE PRODUCTOS AL MENSAJITO DEL CARRITO
-        let cantidadProductos = pedidoUsuario.length.toString();
-        const cantidadSpan = document.querySelector(".cantidad-car");
-        cantidadSpan.style.display = "flex";
-        cantidadSpan.textContent = cantidadProductos;
-
-        pedidoUsuario.forEach((element, i) => {
-          console.log("Producto " + i + 1 + " del pedido:");
-          const nombreProducto = element.product.name; // Nombre del producto que el usuario quiere comprar
-          const precioProducto = element.product.price.regular; // Precio del producto que el usuario quiere comprar
-          const precioOfertaProducto = element.product.price.sale; // Precio de oferta del producto que el usuario quiere comprar, si no hay oferta este campo es null
-          const descripcionProducto = element.product.description.short; // Descripcion corta del producto que el usuario quiere comprar
-          const stockProducto = element.product.stock; // Cantidad de productos que existe para comprar
-          const imgProducto = element.product.images[0].url; // Imagen del producto que el usuario quiere comprar, si el producto tiene mas de una imagen, esta es la primera
-          const altImgProducto = element.product.images[0].alt; // Texto alternativo de la imagen del producto que el usuario quiere comprar, si el producto tiene mas de una imagen, esta es la primera
-          const cantidadProducto = element.quantity; // Cantidad de productos que el usuario quiere comprar
-          console.log(
-            nombreProducto,
-            precioProducto,
-            precioOfertaProducto,
-            descripcionProducto,
-            stockProducto,
-            imgProducto,
-            altImgProducto,
-            cantidadProducto
-          );
-          console.log("-----------------------------------");
-
-          // ISERTO LOS DATOS EN EL CARRITO FROEND
-
-          // DETERMINA SI EL PRECIO OFERTA TIENE CONTENIDO O ES NULLO Y SE GUARDA EN PRECIOFINAL LA OFERTA O EL ORIGINAL
-          //SEGUN SU RESULTADO SIN CONTENIDO O NULL OFERTA O NO NULL
-          const precioFinal =
-            precioOfertaProducto !== null
-              ? precioOfertaProducto
-              : precioProducto;
-
-          // CALCULA PRECIO FINAL DE PRODUCTO CON CANTIDAD
-          const totalPrecio = precioFinal * cantidadProducto;
-
-          // FORMATEA PRECIO LOCAL COLOMBIANO
-          const precioFormateado = precioFinal.toLocaleString("es-CO", {
-            style: "currency",
-            currency: "COP",
-          });
-          const totalPrecioFormateado = totalPrecio.toLocaleString("es-CO", {
-            style: "currency",
-            currency: "COP",
-          });
-          const precioAnteriorFormateado = precioProducto.toLocaleString(
-            "es-CO",
-            { style: "currency", currency: "COP" }
-          );
-
-          var cardCarrito = `
-        
-                       <div class="carrito-card">
-                <img src="${imgProducto}" class="img-producto-car" alt="${altImgProducto}">
-                <div class="cont-name-descripcion">
-                    <div class="name-producto">
-                        ${nombreProducto}
-                    </div>
-                    <div class="descrip-producto">
-                        ${descripcionProducto}
-                    </div>
-                </div>
-                <div class="cantidad-precio">
-                    <div class="cantidad-productos">
-                        <span class="Ncantidad">${cantidadProducto}</span>
-                    </div>
-                    <div class="cont-precio-car">
-                    <div class="cont-precios">
-                        ${
-                          precioOfertaProducto !== null
-                            ? `
-                            <span class="precio-anterior">
-                                ${precioAnteriorFormateado}
-                             </span>`
-                            : ""
-                        }
-                        <span class="precio-anterior pruni">
-                            ${precioFormateado} COP
-                        </span>
-                        <span class="valor-precio">
-                            ${totalPrecioFormateado} COP
-                        </span>
-                        </div>
-                        <i class="fa-solid fa-trash basury"></i>
-                    </div>
-                </div>
-            </div>`;
-          contCardCarrito.innerHTML += cardCarrito;
-        });
-      } else {
-        // Cuando el usuario recien logueado no tiene nada en el carrito
-        var mensCarrito = `<div class="mensajeRespuesta">
-                      No has escogido ningun producto.
-                    </div>
-`;
-        contCardCarrito.innerHTML += mensCarrito;
-      }
+      mostrarCarrito(pedidoUsuario, contCardCarrito);
     })
     .fail(function (errorThrown) {
       if (errorThrown.status >= 500) {
@@ -224,32 +123,199 @@ const obtenerDatosUsuario = () => {
         showToast(errorThrown.responseJSON.message, "warning");
       }
       localStorage.removeItem("token");
+      window.location.href = "index.html";
     });
 };
 
 //FIN INICIA Y CIERRA SESION
 
-function AgregarCarrito() {
-  const cantidadSpan = document.querySelector(".cantidad-car");
-  if (cantidadSpan.textContent.trim() === "") {
-    cantidadSpan.textContent = "1";
-    cantidadSpan.style.display = "flex";
-    return;
-  }
-  let cantidadActual =
-    cantidadSpan.textContent === "99+"
-      ? 99
-      : parseInt(cantidadSpan.textContent, 10);
+function AgregarCarrito(idProducto) {
+  document.querySelectorAll(".card-button").forEach((btn) => {
+    const idBtn = btn.dataset.id;
+    if (idBtn == idProducto) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-check"></i>';
 
-  cantidadActual++;
-
-  if (cantidadActual > 99) {
-    cantidadSpan.textContent = "99+";
-  } else {
-    cantidadSpan.textContent = cantidadActual;
-  }
+      document.querySelectorAll(".quantity-input").forEach((input) => {
+        const idInput = input.getAttribute("id");
+        const quantity = input.value;
+        if (idInput == idProducto) {
+          insertarProductoCarrito(idProducto, quantity, btn);
+        }
+      });
+    }
+  });
 }
 
+// Insertar datos de carrito a la base de datos
+const insertarProductoCarrito = (idProducto, quantity, btn) => {
+  const token = localStorage.getItem("token");
+
+  const settings_api = {
+    url: tunel + "/api/cart/add",
+    method: "POST",
+    timeout: 0,
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify({
+      productId: idProducto,
+      quantity: quantity,
+    }),
+  };
+
+  $.ajax(settings_api)
+    .done(function (response) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-cart-plus"></i> Agregar';
+      showToast(response.message, "success", 5000);
+      obtenerDatosCarrito();
+    })
+    .fail(function (errorThrown) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-cart-plus"></i> Agregar';
+      if (errorThrown.status >= 500) {
+        // Alerta de error en el servidor, hecha con el archivo alerta
+        showToast(errorThrown.responseJSON.message, "error");
+      } else {
+        showToast(errorThrown.responseJSON.message, "warning");
+      }
+    });
+};
+
+const obtenerDatosCarrito = () => {
+  const contCardCarrito = document.querySelector(".cont-carrito");
+
+  const token = localStorage.getItem("token");
+  const settings_api = {
+    url: tunel + "/api/cart/",
+    method: "GET",
+    timeout: 0,
+    headers: {
+      Authorization: "Bearer " + token,
+      "ngrok-skip-browser-warning": "true",
+    },
+  };
+
+  $.ajax(settings_api)
+    .done(function (response) {
+      const pedidoUsuario = response.data.items;
+      mostrarCarrito(pedidoUsuario, contCardCarrito);
+    })
+    .fail(function (errorThrown) {
+      if (errorThrown.status >= 500) {
+        // Alerta de error en el servidor, hecha con el archivo alerta
+        showToast(errorThrown.responseJSON.message, "error");
+      } else {
+        showToast(errorThrown.responseJSON.message, "warning");
+      }
+    });
+};
+
+const mostrarCarrito = (pedidoUsuario, contCardCarrito) => {
+  contCardCarrito.innerHTML = "";
+  if (pedidoUsuario.length > 0) {
+    // AGREGO LA CANTIDAD DE PRODUCTOS AL MENSAJITO DEL CARRITO
+    let cantidadProductos = pedidoUsuario.length.toString();
+    const cantidadSpan = document.querySelector(".cantidad-car");
+    cantidadSpan.style.display = "flex";
+    cantidadSpan.textContent = cantidadProductos;
+
+    pedidoUsuario.forEach((element, i) => {
+      console.log("Producto " + i + 1 + " del pedido:");
+      const nombreProducto = element.product.name; // Nombre del producto que el usuario quiere comprar
+      const precioProducto = element.product.price.regular; // Precio del producto que el usuario quiere comprar
+      const precioOfertaProducto = element.product.price.sale; // Precio de oferta del producto que el usuario quiere comprar, si no hay oferta este campo es null
+      const descripcionProducto = element.product.description.short; // Descripcion corta del producto que el usuario quiere comprar
+      const stockProducto = element.product.stock; // Cantidad de productos que existe para comprar
+      const imgProducto = element.product.images[0].url; // Imagen del producto que el usuario quiere comprar, si el producto tiene mas de una imagen, esta es la primera
+      const altImgProducto = element.product.images[0].alt; // Texto alternativo de la imagen del producto que el usuario quiere comprar, si el producto tiene mas de una imagen, esta es la primera
+      const cantidadProducto = element.quantity; // Cantidad de productos que el usuario quiere comprar
+      console.log(
+        nombreProducto,
+        precioProducto,
+        precioOfertaProducto,
+        descripcionProducto,
+        stockProducto,
+        imgProducto,
+        altImgProducto,
+        cantidadProducto
+      );
+      console.log("-----------------------------------");
+
+      // ISERTO LOS DATOS EN EL CARRITO FROEND
+
+      // DETERMINA SI EL PRECIO OFERTA TIENE CONTENIDO O ES NULLO Y SE GUARDA EN PRECIOFINAL LA OFERTA O EL ORIGINAL
+      //SEGUN SU RESULTADO SIN CONTENIDO O NULL OFERTA O NO NULL
+      const precioFinal =
+        precioOfertaProducto !== null ? precioOfertaProducto : precioProducto;
+
+      // CALCULA PRECIO FINAL DE PRODUCTO CON CANTIDAD
+      const totalPrecio = precioFinal * cantidadProducto;
+
+      // FORMATEA PRECIO LOCAL COLOMBIANO
+      const precioFormateado = precioFinal.toLocaleString("es-CO", {
+        style: "currency",
+        currency: "COP",
+      });
+      const totalPrecioFormateado = totalPrecio.toLocaleString("es-CO", {
+        style: "currency",
+        currency: "COP",
+      });
+      const precioAnteriorFormateado = precioProducto.toLocaleString("es-CO", {
+        style: "currency",
+        currency: "COP",
+      });
+
+      var cardCarrito = `
+    
+                   <div class="carrito-card">
+            <img src="${imgProducto}" class="img-producto-car" alt="${altImgProducto}">
+            <div class="cont-name-descripcion">
+                <div class="name-producto">
+                    ${nombreProducto}
+                </div>
+                <div class="descrip-producto">
+                    ${descripcionProducto}
+                </div>
+            </div>
+            <div class="cantidad-precio">
+                <div class="cantidad-productos">
+                    <span class="Ncantidad">${cantidadProducto}</span>
+                </div>
+                <div class="cont-precio-car">
+                <div class="cont-precios">
+                    ${
+                      precioOfertaProducto !== null
+                        ? `
+                        <span class="precio-anterior">
+                            ${precioAnteriorFormateado}
+                         </span>`
+                        : ""
+                    }
+                    <span class="precio-anterior pruni">
+                        ${precioFormateado} COP
+                    </span>
+                    <span class="valor-precio">
+                        ${totalPrecioFormateado} COP
+                    </span>
+                    </div>
+                    <i class="fa-solid fa-trash basury"></i>
+                </div>
+            </div>
+        </div>`;
+      contCardCarrito.innerHTML += cardCarrito;
+    });
+  } else {
+    // Cuando el usuario recien logueado no tiene nada en el carrito
+    var mensCarrito = `<div class="mensajeRespuesta">
+                  No has escogido ningun producto.
+                </div>
+`;
+    contCardCarrito.innerHTML += mensCarrito;
+  }
+};
 // MODALES FUNCIONES
 
 function OpenContLogin() {
@@ -284,10 +350,8 @@ function CloseUserOptions() {
   document.querySelector(".cont-estructura").style.pointerEvents = "all";
 }
 
-
-
 const obtenerProductos = () => {
-  const contCardP = document.querySelector('.cont-ajustable');
+  const contCardP = document.querySelector(".cont-ajustable");
   const settings_api = {
     url: tunel + "/api/productos",
     method: "GET",
@@ -332,19 +396,10 @@ const obtenerProductos = () => {
                     <button type="button" class="btn-increment btn-control-sr" data-id="${idProducto}">+</button>
                   </div>
                 </div>
-                <div class="card-button" onclick="AgregarCarrito('${idProducto}')">
-                  <svg class="svg-icon" viewBox="0 0 20 20">
-                      <path
-                    d="M17.72,5.011H8.026c-0.271,0-0.49,0.219-0.49,0.489c0,0.271,0.219,0.489,0.49,0.489h8.962l-1.979,4.773H6.763L4.935,5.343C4.926,5.316,4.897,5.309,4.884,5.286c-0.011-0.024,0-0.051-0.017-0.074C4.833,5.166,4.025,4.081,2.33,3.908C2.068,3.883,1.822,4.075,1.795,4.344C1.767,4.612,1.962,4.853,2.231,4.88c1.143,0.118,1.703,0.738,1.808,0.866l1.91,5.661c0.066,0.199,0.252,0.333,0.463,0.333h8.924c0.116,0,0.22-0.053,0.308-0.128c0.027-0.023,0.042-0.048,0.063-0.076c0.026-0.034,0.063-0.058,0.08-0.099l2.384-5.75c0.062-0.151,0.046-0.323-0.045-0.458C18.036,5.092,17.883,5.011,17.72,5.011z">
-                  </path>
-                  <path
-                    d="M8.251,12.386c-1.023,0-1.856,0.834-1.856,1.856s0.833,1.853,1.856,1.853c1.021,0,1.853-0.83,1.853-1.853S9.273,12.386,8.251,12.386z M8.251,15.116c-0.484,0-0.877-0.393-0.877-0.874c0-0.484,0.394-0.878,0.877-0.878c0.482,0,0.875,0.394,0.875,0.878C9.126,14.724,8.733,15.116,8.251,15.116z">
-                  </path>
-                  <path
-                    d="M13.972,12.386c-1.022,0-1.855,0.834-1.855,1.856s0.833,1.853,1.855,1.853s1.854-0.83,1.854-1.853S14.994,12.386,13.972,12.386z M13.972,15.116c-0.484,0-0.878-0.393-0.878-0.874c0-0.484,0.394-0.878,0.878-0.878c0.482,0,0.875,0.394,0.875,0.878C14.847,14.724,14.454,15.116,13.972,15.116z">
-                  </path>
-                  </svg>
-                </div>
+                <button class="card-button" data-id="${idProducto}" onclick="AgregarCarrito('${idProducto}')">
+                  <i class="fa-solid fa-cart-plus"></i>
+                  Agregar
+                </button>
               </div>
             </div>
           `;
@@ -367,8 +422,8 @@ const obtenerProductos = () => {
 };
 
 const configurarEventosCantidad = () => {
-  document.querySelectorAll('.btn-increment').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
+  document.querySelectorAll(".btn-increment").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
       const idProducto = e.target.dataset.id;
       const inputCantidad = document.getElementById(idProducto);
       let cantidadActual = parseInt(inputCantidad.value, 10);
@@ -382,8 +437,8 @@ const configurarEventosCantidad = () => {
     });
   });
 
-  document.querySelectorAll('.btn-decrement').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
+  document.querySelectorAll(".btn-decrement").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
       const idProducto = e.target.dataset.id;
       const inputCantidad = document.getElementById(idProducto);
       let cantidadActual = parseInt(inputCantidad.value, 10);
@@ -396,7 +451,6 @@ const configurarEventosCantidad = () => {
     });
   });
 };
-
 
 const obtenerCategorias = () => {
   const settings_api = {
