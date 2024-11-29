@@ -13,7 +13,7 @@
   --sombra-3: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
 body{
-    background-image: url("https://media-tienda-esquina-6546601.s3.us-east-2.amazonaws.com/fondo_interfaz.svg");
+    background-image: url("../img/fondo_interfaz.png");
     background-size: 100%;
     font-family: Arial, sans-serif, Claibri, verdana;
 }

@@ -15,7 +15,7 @@
       <div class="cont-filtro-name">
         <div class="cont-name-empresa" onclick="InicioReload()">
 
-          <img src="https://media-tienda-esquina-6546601.s3.amazonaws.com/logo.png" width="110px" height="110px" alt="">
+          <img src="img/logo.png" width="110px" height="110px" alt="">
         </div>
         <div class="cont-filtro">
 
@@ -212,21 +212,20 @@
         <div class="heading">Iniciar Sesión
           <i class="fa-solid fa-circle-xmark ekis" onclick="CloseLogin()"></i>
         </div>
-        <form action="" class="form">
-          <input required="" class="input" type="email" name="email" id="email" placeholder="Correo electrónico">
-          <input required="" class="input" type="password" name="password" id="password" placeholder="Contraseña">
+        <form action="" class="form" onsubmit="return iniciarSesion(event)">
+          <input required="" class="input" type="email" name="email_login" id="email" placeholder="Correo electrónico">
+          <input required="" class="input" type="password" name="password_login" id="password" placeholder="Contraseña">
           <span class="forgot-password"><a href="recuperar_contraseña.html">¿Olvidaste tu contraseña ?</a></span>
-          <input class="login-button" type="submit" value="Iniciar">
-
+          <input class="login-button" type="submit"  value="Iniciar">
         </form>
         <span class="agreement"><a href="registrarse.html">Crear usuario</a></span>
       </div>
     </div>
   </div>
-
-
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="js/alerta.js"></script>
+  <script src="js/Tunel.js"></script>
   <script src="js/IndexScripts.js"></script>
-
 </body>
 
 </html>
