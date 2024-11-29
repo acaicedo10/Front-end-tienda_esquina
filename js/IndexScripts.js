@@ -3,12 +3,14 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!isAuthenticated()) {
     // Si no hay nadie logueado:
     document.querySelector(".OpnLog").style.display = "flex";
-    document.querySelector('.iconcarrito').style.display = "none";
+    document.querySelector(".iconcarrito").style.display = "none";
     document.querySelector(".PrfIcon").style.display = "none";
   } else {
     // Si hay un usuario logueado:
     obtenerDatosUsuario();
   }
+  obtenerProductos();
+  obtenerCategorias();
 });
 
 function InicioReload() {
@@ -26,7 +28,7 @@ function isAuthenticated() {
 function cerrarSesion() {
   document.querySelector(".OpnLog").style.display = "flex";
   document.querySelector(".PrfIcon").style.display = "none";
-  document.querySelector('.iconcarrito').style.display = "none";
+  document.querySelector(".iconcarrito").style.display = "none";
   // Se remueve el token para que la validacion identifique que no hay nadie logueado
   localStorage.removeItem("token");
   setTimeout(function () {
@@ -62,8 +64,7 @@ const iniciarSesion = (event) => {
       showToast(response.message, "success", 5000);
       setTimeout(function () {
         window.location.href = "index.html";
-        document.querySelector('.iconcarrito').style.display = "flex";
-
+        document.querySelector(".iconcarrito").style.display = "flex";
       }, 1000);
     })
     .fail(function (errorThrown) {
@@ -81,9 +82,8 @@ const iniciarSesion = (event) => {
 
 const obtenerDatosUsuario = () => {
   // AQUI ESTAN LOS DATOS DEL USUARIO LOGUEADO "LAS VARIABLES"
-  const contCardCarrito = document.querySelector('.cont-carrito');
+  const contCardCarrito = document.querySelector(".cont-carrito");
   const token = localStorage.getItem("token");
-  console.log(token);
   const settings_api = {
     url: tunel + "/api/users/profile",
     method: "GET",
@@ -104,28 +104,25 @@ const obtenerDatosUsuario = () => {
       const ultimavezLogeo = response.data.lastLogin; // La fecha de la ultima vez que se logeo el usuario
 
       //OK AQUI COLOCO EL NOMBRE QUE ES LO UNICO QUE NECESITABA V:
-      const ModalDatosUser = document.querySelector('.cont-data-user');
+      const ModalDatosUser = document.querySelector(".cont-data-user");
       ModalDatosUser.innerHTML = "";
       var contDataUser = `              <i class="fa-solid fa-circle-user"></i>
               <div class="nameuser-text">${nombreUsuario} ${apellidoUsuario}</div>
 `;
-ModalDatosUser.innerHTML += contDataUser;
+      ModalDatosUser.innerHTML += contDataUser;
 
       // Variables del carrito de compras del usuario logueado:
-      console.log("El usuario tenia un pedido antes?")
       const pedidoUsuario = response.data.cart.items; // Arreglo del pedido del usuario, osea los productos que piensa comprar el usuario
-      
-      if(pedidoUsuario.length > 0) {
 
+      if (pedidoUsuario.length > 0) {
         // AGREGO LA CANTIDAD DE PRODUCTOS AL MENSAJITO DEL CARRITO
         let cantidadProductos = pedidoUsuario.length.toString();
-        const cantidadSpan = document.querySelector('.cantidad-car');
+        const cantidadSpan = document.querySelector(".cantidad-car");
         cantidadSpan.style.display = "flex";
         cantidadSpan.textContent = cantidadProductos;
-        
 
         pedidoUsuario.forEach((element, i) => {
-          console.log("Producto " + i+1 + " del pedido:");
+          console.log("Producto " + i + 1 + " del pedido:");
           const nombreProducto = element.product.name; // Nombre del producto que el usuario quiere comprar
           const precioProducto = element.product.price.regular; // Precio del producto que el usuario quiere comprar
           const precioOfertaProducto = element.product.price.sale; // Precio de oferta del producto que el usuario quiere comprar, si no hay oferta este campo es null
@@ -145,21 +142,32 @@ ModalDatosUser.innerHTML += contDataUser;
             cantidadProducto
           );
           console.log("-----------------------------------");
-          
+
           // ISERTO LOS DATOS EN EL CARRITO FROEND
 
-    // DETERMINA SI EL PRECIO OFERTA TIENE CONTENIDO O ES NULLO Y SE GUARDA EN PRECIOFINAL LA OFERTA O EL ORIGINAL
-    //SEGUN SU RESULTADO SIN CONTENIDO O NULL OFERTA O NO NULL
-    const precioFinal = precioOfertaProducto !== null ? precioOfertaProducto : precioProducto;
+          // DETERMINA SI EL PRECIO OFERTA TIENE CONTENIDO O ES NULLO Y SE GUARDA EN PRECIOFINAL LA OFERTA O EL ORIGINAL
+          //SEGUN SU RESULTADO SIN CONTENIDO O NULL OFERTA O NO NULL
+          const precioFinal =
+            precioOfertaProducto !== null
+              ? precioOfertaProducto
+              : precioProducto;
 
-    // CALCULA PRECIO FINAL DE PRODUCTO CON CANTIDAD
-    const totalPrecio = precioFinal * cantidadProducto;
+          // CALCULA PRECIO FINAL DE PRODUCTO CON CANTIDAD
+          const totalPrecio = precioFinal * cantidadProducto;
 
-    // FORMATEA PRECIO LOCAL COLOMBIANO
-    const precioFormateado = precioFinal.toLocaleString('es-CO', { style: 'currency', currency: 'COP' });
-    const totalPrecioFormateado = totalPrecio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' });
-    const precioAnteriorFormateado = precioProducto.toLocaleString('es-CO', { style: 'currency', currency: 'COP' });
-     
+          // FORMATEA PRECIO LOCAL COLOMBIANO
+          const precioFormateado = precioFinal.toLocaleString("es-CO", {
+            style: "currency",
+            currency: "COP",
+          });
+          const totalPrecioFormateado = totalPrecio.toLocaleString("es-CO", {
+            style: "currency",
+            currency: "COP",
+          });
+          const precioAnteriorFormateado = precioProducto.toLocaleString(
+            "es-CO",
+            { style: "currency", currency: "COP" }
+          );
 
           var cardCarrito = `
         
@@ -179,10 +187,14 @@ ModalDatosUser.innerHTML += contDataUser;
                     </div>
                     <div class="cont-precio-car">
                     <div class="cont-precios">
-                        ${precioOfertaProducto !== null ? `
+                        ${
+                          precioOfertaProducto !== null
+                            ? `
                             <span class="precio-anterior">
                                 ${precioAnteriorFormateado}
-                             </span>` : ''}
+                             </span>`
+                            : ""
+                        }
                         <span class="precio-anterior pruni">
                             ${precioFormateado} COP
                         </span>
@@ -194,18 +206,15 @@ ModalDatosUser.innerHTML += contDataUser;
                     </div>
                 </div>
             </div>`;
-                    contCardCarrito.innerHTML += cardCarrito;
-
-
+          contCardCarrito.innerHTML += cardCarrito;
         });
-      }else{
+      } else {
+        // Cuando el usuario recien logueado no tiene nada en el carrito
         var mensCarrito = `<div class="mensajeRespuesta">
                       No has escogido ningun producto.
                     </div>
 `;
-contCardCarrito.innerHTML += mensCarrito;
-        // Cuando el usuario recien logueado no tiene nada en el carrito
-        console.log("No tenia")
+        contCardCarrito.innerHTML += mensCarrito;
       }
     })
     .fail(function (errorThrown) {
@@ -291,3 +300,93 @@ function decrementarCantidad() {
     inputCantidad.value = cantidadActual - 1;
   }
 }
+
+const obtenerProductos = () => {
+  const settings_api = {
+    url: tunel + "/api/productos",
+    method: "GET",
+    timeout: 0,
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+    },
+  };
+
+  $.ajax(settings_api)
+    .done(function (response) {
+      // VARIABLES DE LOS DATOS DE LOS PRODUCTOS
+      const productos = response.data.products; // Arreglo de los productos
+
+      if (productos.length > 0) {
+        productos.forEach((element, i) => {
+          console.log("Producto " + (i + 1));
+          const nombreProducto = element.name; // Nombre del producto
+          const precioProducto = element.price.regular; // Precio del producto
+          const precioOfertaProducto = element.price.sale; // Precio de oferta del producto, si no hay oferta este campo es null
+          const descripcionProducto = element.description.short; // Descripcion corta del producto
+          const stockProducto = element.stock; // Cantidad de productos que existe para comprar
+          const imgProducto = element.images[0].url; // Imagen del producto, si el producto tiene mas de una imagen, esta es la primera
+          const altImgProducto = element.images[0].alt;
+          const idCategoriaProducto = element.categories[0]._id;
+          const nombreCategoriaProducto = element.categories[0].name; // Categorias que tine este producto
+          console.log(
+            nombreProducto,
+            precioProducto,
+            precioOfertaProducto,
+            descripcionProducto,
+            stockProducto,
+            imgProducto,
+            altImgProducto,
+            idCategoriaProducto,
+            nombreCategoriaProducto
+          );
+          console.log("-----------------------------------");
+        });
+      } else {
+        console.log("No hay productos disponibles.");
+      }
+    })
+    .fail(function (errorThrown) {
+      if (errorThrown.status >= 500) {
+        // Alerta de error en el servidor, hecha con el archivo alerta
+        showToast(errorThrown.responseJSON.message, "error");
+      } else {
+        showToast(errorThrown.responseJSON.message, "warning");
+      }
+    });
+};
+
+const obtenerCategorias = () => {
+  const settings_api = {
+    url: tunel + "/api/categories",
+    method: "GET",
+    timeout: 0,
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+    },
+  };
+
+  $.ajax(settings_api)
+    .done(function (response) {
+      // VARIABLES DE LOS DATOS DE LAS CATEGORIAS
+      const categorias = response.data.data;
+      if (categorias.length > 0) {
+        categorias.forEach((element, i) => {
+          console.log("Categoria " + (i + 1));
+          const idCategoria = element._id;
+          const nombreCategoria = element.name; // Nombre de la categoria
+          const descripcionCategoria = element.description; // Descripcion de la categoria
+          const imgCategoria = element.image; // Imagen de la categoria
+          console.log(nombreCategoria, imgCategoria, descripcionCategoria);
+          console.log("-----------------------------------");
+        });
+      }
+    })
+    .fail(function (errorThrown) {
+      if (errorThrown.status >= 500) {
+        // Alerta de error en el servidor, hecha con el archivo alerta
+        showToast(errorThrown.responseJSON.message, "error");
+      } else {
+        showToast(errorThrown.responseJSON.message, "warning");
+      }
+    });
+};
