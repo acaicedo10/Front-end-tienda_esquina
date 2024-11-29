@@ -134,7 +134,7 @@ function AgregarCarrito(idProducto) {
     const idBtn = btn.dataset.id;
     if (idBtn == idProducto) {
       btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
       document.querySelectorAll(".quantity-input").forEach((input) => {
         const idInput = input.getAttribute("id");
@@ -213,6 +213,48 @@ const obtenerDatosCarrito = () => {
     });
 };
 
+const eliminarProductoDelCarrito = (idProducto) => {
+  document.querySelectorAll(".btn-eliminar-producto").forEach((btn) => {
+    const idBtn = btn.dataset.id;
+    if (idBtn == idProducto) {
+      btn.disabled = true;
+      btn.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin" style="font-size:20px"></i>';
+
+      const token = localStorage.getItem("token");
+      const settings_api = {
+        url: tunel + "/api/cart/remove",
+        method: "DELETE",
+        timeout: 0,
+        headers: {
+          Authorization: "Bearer " + token,
+          "ngrok-skip-browser-warning": "true",
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify({
+          productId: idProducto,
+          variants: [],
+        }),
+      };
+      $.ajax(settings_api)
+        .done(function (response) {
+          showToast(response.message, "success");
+          obtenerDatosCarrito();
+        })
+        .fail(function (errorThrown) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-trash basury"></i>';
+          if (errorThrown.status >= 500) {
+            // Alerta de error en el servidor, hecha con el archivo alerta
+            showToast(errorThrown.responseJSON.message, "error");
+          } else {
+            showToast(errorThrown.responseJSON.message, "warning");
+          }
+        });
+    }
+  });
+};
+
 const mostrarCarrito = (pedidoUsuario, contCardCarrito) => {
   contCardCarrito.innerHTML = "";
   if (pedidoUsuario.length > 0) {
@@ -223,7 +265,6 @@ const mostrarCarrito = (pedidoUsuario, contCardCarrito) => {
     cantidadSpan.textContent = cantidadProductos;
 
     pedidoUsuario.forEach((element, i) => {
-      console.log("Producto " + i + 1 + " del pedido:");
       const nombreProducto = element.product.name; // Nombre del producto que el usuario quiere comprar
       const precioProducto = element.product.price.regular; // Precio del producto que el usuario quiere comprar
       const precioOfertaProducto = element.product.price.sale; // Precio de oferta del producto que el usuario quiere comprar, si no hay oferta este campo es null
@@ -232,17 +273,7 @@ const mostrarCarrito = (pedidoUsuario, contCardCarrito) => {
       const imgProducto = element.product.images[0].url; // Imagen del producto que el usuario quiere comprar, si el producto tiene mas de una imagen, esta es la primera
       const altImgProducto = element.product.images[0].alt; // Texto alternativo de la imagen del producto que el usuario quiere comprar, si el producto tiene mas de una imagen, esta es la primera
       const cantidadProducto = element.quantity; // Cantidad de productos que el usuario quiere comprar
-      console.log(
-        nombreProducto,
-        precioProducto,
-        precioOfertaProducto,
-        descripcionProducto,
-        stockProducto,
-        imgProducto,
-        altImgProducto,
-        cantidadProducto
-      );
-      console.log("-----------------------------------");
+      const idProducto = element.product._id;
 
       // ISERTO LOS DATOS EN EL CARRITO FROEND
 
@@ -301,7 +332,9 @@ const mostrarCarrito = (pedidoUsuario, contCardCarrito) => {
                         ${totalPrecioFormateado} COP
                     </span>
                     </div>
-                    <i class="fa-solid fa-trash basury"></i>
+                    <button class="btn-eliminar-producto" data-id="${idProducto}" onclick="eliminarProductoDelCarrito('${idProducto}')">
+                      <i class="fa-solid fa-trash basury"></i>
+                    </button>
                 </div>
             </div>
         </div>`;
