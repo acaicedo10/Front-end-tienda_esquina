@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!isAuthenticated()) {
     // Si no hay nadie logueado:
     document.querySelector(".OpnLog").style.display = "flex";
+    document.querySelector('.iconcarrito').style.display = "none";
     document.querySelector(".PrfIcon").style.display = "none";
   } else {
     // Si hay un usuario logueado:
@@ -25,11 +26,12 @@ function isAuthenticated() {
 function cerrarSesion() {
   document.querySelector(".OpnLog").style.display = "flex";
   document.querySelector(".PrfIcon").style.display = "none";
+  document.querySelector('.iconcarrito').style.display = "none";
   // Se remueve el token para que la validacion identifique que no hay nadie logueado
   localStorage.removeItem("token");
   setTimeout(function () {
     window.location.href = "index.html";
-  }, 500);
+  }, 10);
 }
 
 const iniciarSesion = (event) => {
@@ -60,7 +62,9 @@ const iniciarSesion = (event) => {
       showToast(response.message, "success", 5000);
       setTimeout(function () {
         window.location.href = "index.html";
-      }, 2000);
+        document.querySelector('.iconcarrito').style.display = "flex";
+
+      }, 1000);
     })
     .fail(function (errorThrown) {
       btnSubmit.disabled = false;
@@ -77,7 +81,7 @@ const iniciarSesion = (event) => {
 
 const obtenerDatosUsuario = () => {
   // AQUI ESTAN LOS DATOS DEL USUARIO LOGUEADO "LAS VARIABLES"
-
+  const contCardCarrito = document.querySelector('.cont-carrito');
   const token = localStorage.getItem("token");
   console.log(token);
   const settings_api = {
@@ -99,12 +103,27 @@ const obtenerDatosUsuario = () => {
       const correoUsuario = response.data.email;
       const ultimavezLogeo = response.data.lastLogin; // La fecha de la ultima vez que se logeo el usuario
 
+      //OK AQUI COLOCO EL NOMBRE QUE ES LO UNICO QUE NECESITABA V:
+      const ModalDatosUser = document.querySelector('.cont-data-user');
+      ModalDatosUser.innerHTML = "";
+      var contDataUser = `              <i class="fa-solid fa-circle-user"></i>
+              <div class="nameuser-text">${nombreUsuario} ${apellidoUsuario}</div>
+`;
+ModalDatosUser.innerHTML += contDataUser;
 
       // Variables del carrito de compras del usuario logueado:
       console.log("El usuario tenia un pedido antes?")
       const pedidoUsuario = response.data.cart.items; // Arreglo del pedido del usuario, osea los productos que piensa comprar el usuario
       
       if(pedidoUsuario.length > 0) {
+
+        // AGREGO LA CANTIDAD DE PRODUCTOS AL MENSAJITO DEL CARRITO
+        let cantidadProductos = pedidoUsuario.length.toString();
+        const cantidadSpan = document.querySelector('.cantidad-car');
+        cantidadSpan.style.display = "flex";
+        cantidadSpan.textContent = cantidadProductos;
+        
+
         pedidoUsuario.forEach((element, i) => {
           console.log("Producto " + i+1 + " del pedido:");
           const nombreProducto = element.product.name; // Nombre del producto que el usuario quiere comprar
@@ -126,8 +145,65 @@ const obtenerDatosUsuario = () => {
             cantidadProducto
           );
           console.log("-----------------------------------");
+          
+          // ISERTO LOS DATOS EN EL CARRITO FROEND
+
+    // DETERMINA SI EL PRECIO OFERTA TIENE CONTENIDO O ES NULLO Y SE GUARDA EN PRECIOFINAL LA OFERTA O EL ORIGINAL
+    //SEGUN SU RESULTADO SIN CONTENIDO O NULL OFERTA O NO NULL
+    const precioFinal = precioOfertaProducto !== null ? precioOfertaProducto : precioProducto;
+
+    // CALCULA PRECIO FINAL DE PRODUCTO CON CANTIDAD
+    const totalPrecio = precioFinal * cantidadProducto;
+
+    // FORMATEA PRECIO LOCAL COLOMBIANO
+    const precioFormateado = precioFinal.toLocaleString('es-CO', { style: 'currency', currency: 'COP' });
+    const totalPrecioFormateado = totalPrecio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' });
+    const precioAnteriorFormateado = precioProducto.toLocaleString('es-CO', { style: 'currency', currency: 'COP' });
+     
+
+          var cardCarrito = `
+        
+                       <div class="carrito-card">
+                <img src="${imgProducto}" class="img-producto-car" alt="${altImgProducto}">
+                <div class="cont-name-descripcion">
+                    <div class="name-producto">
+                        ${nombreProducto}
+                    </div>
+                    <div class="descrip-producto">
+                        ${descripcionProducto}
+                    </div>
+                </div>
+                <div class="cantidad-precio">
+                    <div class="cantidad-productos">
+                        <span class="Ncantidad">${cantidadProducto}</span>
+                    </div>
+                    <div class="cont-precio-car">
+                    <div class="cont-precios">
+                        ${precioOfertaProducto !== null ? `
+                            <span class="precio-anterior">
+                                ${precioAnteriorFormateado}
+                             </span>` : ''}
+                        <span class="precio-anterior pruni">
+                            ${precioFormateado} COP
+                        </span>
+                        <span class="valor-precio">
+                            ${totalPrecioFormateado} COP
+                        </span>
+                        </div>
+                        <i class="fa-solid fa-trash basury"></i>
+                    </div>
+                </div>
+            </div>`;
+                    contCardCarrito.innerHTML += cardCarrito;
+
+
         });
       }else{
+        var mensCarrito = `<div class="mensajeRespuesta">
+                      No has escogido ningun producto.
+                    </div>
+`;
+contCardCarrito.innerHTML += mensCarrito;
         // Cuando el usuario recien logueado no tiene nada en el carrito
         console.log("No tenia")
       }

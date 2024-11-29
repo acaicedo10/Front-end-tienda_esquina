@@ -8,6 +8,7 @@
   --color-1:rgb(71, 164, 192);
   --color-2: rgb(255, 255, 255);
   --color-3: rgb(216, 81, 81);
+  --color-4: rgb(48, 135, 146);
   --color-texto-1: rgb(0, 42, 69);
   --color-texto-2: white;
   --sombra: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
@@ -701,19 +702,36 @@ width: 100%;
   width: 45%;
 }
 .Ncantidad{
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 800;
 }
 .cont-precio-car{
   display: flex;
-  gap: 1.5em;
+  flex: 1;
+  padding-right: 1em;
+  justify-content: space-between;
   align-items: center;
+}
+.cont-precios{
+  display: flex;
+  flex-direction: column;
 }
 
 .valor-precio{
-  font-size: 18px;
+  font-size: 14.5px;
+  display: flex;
   font-weight: 600;
 
+}
+.precio-anterior{
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: line-through;
+  color: var(--color-3);
+}
+.pruni{
+  color: var(--color-4);
+  text-decoration: none;
 }
 .basury{
   color: var(--color-texto-1);
