@@ -20,7 +20,7 @@
         <div class="cont-filtro">
 
           <input class="style-input" type="text" placeholder="Encuentra el producto que necesitas...">
-          <button class="style-btn-filtro">
+          <button class="style-btn-filtro" onclick="filtrarProductos()">
             <i class="fa-solid fa-magnifying-glass icon"></i>
           </button>
         </div>
@@ -100,21 +100,18 @@
 
       </div>
       <div class="cont-menu">
-        <div class="btn-menu-option">
+        <div class="btn-menu-option" onclick="resetFiltro()">
           Todo
         </div>
-        <select class="style-select" name="" id="">
+        <select class="style-select contCategories" name="" id="">
           <option value="0" disabled selected>Filtrar Categorias</option>
-          <option value="1">Frutas y Verduras</option>
-          <option value="2">Carnes</option>
-          <option value="3">Granos</option>
-          <option value="4">Huevos y Lacteos</option>
-          <option value="5">Granos</option>
+          
+
         </select>
-        <div class="btn-menu-option">
+        <div class="btn-menu-option" onclick="filtrarOfertas()">
           Ofertas
         </div>
-        <div class="btn-menu-option">
+        <div class="btn-menu-option" onclick="mostrarCategorias()">
           Categorias
         </div>
       </div>
@@ -129,7 +126,8 @@
 
         </div>
         <div class="cont-categorias-exhibicion">
-          
+
+
         </div>
 
       </div>
