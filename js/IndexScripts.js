@@ -11,30 +11,48 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   obtenerProductos();
   obtenerCategorias();
+  document.querySelectorAll(".btn-menu-option").forEach((btn) => {
+    const idFuncionBtn = btn.getAttribute("data-id");
+    if ("mostrarCategorias" == idFuncionBtn) {
+      btn.classList.add("active-menu-seleccionado");
+    } else {
+      btn.classList.remove("active-menu-seleccionado");
+    }
+  });
 });
 
 function InicioReload() {
   location.reload();
 }
 
-
 //MENU DESDE CLIENTE FILTRACION DE PRODUCTOS
 
-document.querySelector('.style-input').addEventListener('keydown', function (event) {
-  if (event.key === "Enter") {
-    filtrarProductos(); // Llama a la función de filtrado
-  }
-});
+document
+  .querySelector(".style-input")
+  .addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      filtrarProductos(); // Llama a la función de filtrado
+    }
+  });
 
-function filtrarOfertas() {
-  const selectCategoria = document.querySelector('.style-select'); // Obtener el elemento select
+function filtrarOfertas(nombreFuncion) {
+  document.querySelectorAll(".btn-menu-option").forEach((btn) => {
+    const idFuncionBtn = btn.getAttribute("data-id");
+    if (nombreFuncion == idFuncionBtn) {
+      btn.classList.add("active-menu-seleccionado");
+    } else {
+      btn.classList.remove("active-menu-seleccionado");
+    }
+  });
+
+  const selectCategoria = document.querySelector(".style-select"); // Obtener el elemento select
   selectCategoria.value = "0"; // Establecer el valor predeterminado (opción deshabilitada "Filtrar Categorias")
-  
-  document.querySelector('.cont-ajustable').style.display = "flex";
-  document.querySelector('.cont-categorias-exhibicion').style.display = "none";
-  const tarjetas = document.querySelectorAll('.card');
+
+  document.querySelector(".cont-ajustable").style.display = "flex";
+  document.querySelector(".cont-categorias-exhibicion").style.display = "none";
+  const tarjetas = document.querySelectorAll(".card");
   tarjetas.forEach((tarjeta) => {
-    const precioOferta = tarjeta.querySelector('.pdtoCard'); // Verifica si la tarjeta tiene un precio de oferta
+    const precioOferta = tarjeta.querySelector(".pdtoCard"); // Verifica si la tarjeta tiene un precio de oferta
     if (precioOferta) {
       tarjeta.style.display = "block"; // Muestra la tarjeta si tiene oferta
     } else {
@@ -43,20 +61,24 @@ function filtrarOfertas() {
   });
 }
 
-
 function filtrarProductos(textoFiltro = null) {
-  const selectCategoria = document.querySelector('.style-select'); // Obtener el elemento select
+  const selectCategoria = document.querySelector(".style-select"); // Obtener el elemento select
   selectCategoria.value = "0"; // Establecer el valor predeterminado (opción deshabilitada "Filtrar Categorias")
-  
-document.querySelector('.cont-ajustable').style.display = "flex";
-document.querySelector('.cont-categorias-exhibicion').style.display = "none";
 
-  const inputFiltro = document.querySelector('.cont-filtro .style-input');
-  const textoBusqueda = textoFiltro !== null ? textoFiltro.toLowerCase() : inputFiltro.value.toLowerCase(); // Usa el argumento o el valor del input
-  const tarjetas = document.querySelectorAll('.card'); // Selecciona todas las tarjetas de productos
+  document.querySelector(".cont-ajustable").style.display = "flex";
+  document.querySelector(".cont-categorias-exhibicion").style.display = "none";
+
+  const inputFiltro = document.querySelector(".cont-filtro .style-input");
+  const textoBusqueda =
+    textoFiltro !== null
+      ? textoFiltro.toLowerCase()
+      : inputFiltro.value.toLowerCase(); // Usa el argumento o el valor del input
+  const tarjetas = document.querySelectorAll(".card"); // Selecciona todas las tarjetas de productos
 
   tarjetas.forEach((tarjeta) => {
-    const tituloProducto = tarjeta.querySelector('.text-title').textContent.toLowerCase(); // Obtiene el texto del título del producto
+    const tituloProducto = tarjeta
+      .querySelector(".text-title")
+      .textContent.toLowerCase(); // Obtiene el texto del título del producto
     if (tituloProducto.includes(textoBusqueda)) {
       tarjeta.style.display = "block"; // Muestra la tarjeta si coincide
     } else {
@@ -65,37 +87,41 @@ document.querySelector('.cont-categorias-exhibicion').style.display = "none";
   });
 }
 
-
-
-
 // Función de filtrado de productos por categoría
 function simularSeleccionCategoria(idCategoria) {
-  document.querySelector('.cont-ajustable').style.display = "flex";
-document.querySelector('.cont-categorias-exhibicion').style.display = "none";
-  const selectCategoria = document.querySelector('.style-select');
-  
+  document.querySelector(".cont-ajustable").style.display = "flex";
+  document.querySelector(".cont-categorias-exhibicion").style.display = "none";
+  const selectCategoria = document.querySelector(".style-select");
+
   // Establecer el valor del select con el id de la categoría seleccionada
-  selectCategoria.value = idCategoria; 
-  
+  selectCategoria.value = idCategoria;
+
   // Ejecutar el filtrado de productos
   filtrarPorCategoria();
 }
 
-
-document.querySelector('.style-select').addEventListener('change', filtrarPorCategoria);
-
-
+document
+  .querySelector(".style-select")
+  .addEventListener("change", filtrarPorCategoria);
 
 // Función de filtrado de productos por categoría
 function filtrarPorCategoria() {
-  const selectCategoria = document.querySelector('.style-select'); // Obtener el select
+  document.querySelectorAll(".btn-menu-option").forEach((btn) => {
+    btn.classList.remove("active-menu-seleccionado");
+  });
+
+  const selectCategoria = document.querySelector(".style-select"); // Obtener el select
   const categoriaSeleccionada = selectCategoria.value; // Obtener la categoría seleccionada desde el select
 
-  const tarjetas = document.querySelectorAll('.card'); // Seleccionar todas las tarjetas de productos
+  const tarjetas = document.querySelectorAll(".card"); // Seleccionar todas las tarjetas de productos
 
   tarjetas.forEach((tarjeta) => {
-    const idCategoriaProducto = tarjeta.querySelector('.idCategoria').textContent; // Obtener el id de la categoría del producto desde el HTML oculto
-    if (categoriaSeleccionada === "0" || idCategoriaProducto === categoriaSeleccionada) {
+    const idCategoriaProducto =
+      tarjeta.querySelector(".idCategoria").textContent; // Obtener el id de la categoría del producto desde el HTML oculto
+    if (
+      categoriaSeleccionada === "0" ||
+      idCategoriaProducto === categoriaSeleccionada
+    ) {
       tarjeta.style.display = "block"; // Muestra la tarjeta si la categoría coincide
     } else {
       tarjeta.style.display = "none"; // Oculta la tarjeta si la categoría no coincide
@@ -103,27 +129,42 @@ function filtrarPorCategoria() {
   });
 }
 
+function resetFiltro(nombreFuncion) {
+  document.querySelectorAll(".btn-menu-option").forEach((btn) => {
+    const idFuncionBtn = btn.getAttribute("data-id");
+    if (nombreFuncion == idFuncionBtn) {
+      btn.classList.add("active-menu-seleccionado");
+    } else {
+      btn.classList.remove("active-menu-seleccionado");
+    }
+  });
 
-function resetFiltro() {
-  const selectCategoria = document.querySelector('.style-select'); // Obtener el elemento select
+  const selectCategoria = document.querySelector(".style-select"); // Obtener el elemento select
   selectCategoria.value = "0"; // Establecer el valor predeterminado (opción deshabilitada "Filtrar Categorias")
-  
-  document.querySelector('.cont-ajustable').style.display = "flex";
-  document.querySelector('.cont-categorias-exhibicion').style.display = "none";
+
+  document.querySelector(".cont-ajustable").style.display = "flex";
+  document.querySelector(".cont-categorias-exhibicion").style.display = "none";
   filtrarProductos(""); // Envía un texto vacío como filtro
-  const inputFiltro = document.querySelector('.cont-filtro .style-input');
+  const inputFiltro = document.querySelector(".cont-filtro .style-input");
   inputFiltro.value = ""; // Limpia el campo de entrada
 }
 
-function mostrarCategorias() {
-  const selectCategoria = document.querySelector('.style-select'); // Obtener el elemento select
+function mostrarCategorias(nombreFuncion) {
+  document.querySelectorAll(".btn-menu-option").forEach((btn) => {
+    const idFuncionBtn = btn.getAttribute("data-id");
+    if (nombreFuncion == idFuncionBtn) {
+      btn.classList.add("active-menu-seleccionado");
+    } else {
+      btn.classList.remove("active-menu-seleccionado");
+    }
+  });
+
+  const selectCategoria = document.querySelector(".style-select"); // Obtener el elemento select
   selectCategoria.value = "0"; // Establecer el valor predeterminado (opción deshabilitada "Filtrar Categorias")
 
-  document.querySelector('.cont-ajustable').style.display = "none";
-  document.querySelector('.cont-categorias-exhibicion').style.display = "flex";
+  document.querySelector(".cont-ajustable").style.display = "none";
+  document.querySelector(".cont-categorias-exhibicion").style.display = "flex";
 }
-
-
 
 // Autentificacion si existe un usuario logueado
 function isAuthenticated() {
@@ -221,7 +262,7 @@ const obtenerDatosUsuario = () => {
 
       // Variables del carrito de compras del usuario logueado:
       const pedidoUsuario = response.data.cart.items; // Arreglo del pedido del usuario, osea los productos que piensa comprar el usuario
-
+      localStorage.setItem("pedidoUsuario", JSON.stringify(pedidoUsuario));
       mostrarCarrito(pedidoUsuario, contCardCarrito);
     })
     .fail(function (errorThrown) {
@@ -309,6 +350,7 @@ const obtenerDatosCarrito = () => {
   $.ajax(settings_api)
     .done(function (response) {
       const pedidoUsuario = response.data.items;
+      localStorage.setItem("pedidoUsuario", JSON.stringify(pedidoUsuario));
       mostrarCarrito(pedidoUsuario, contCardCarrito);
     })
     .fail(function (errorThrown) {
@@ -366,6 +408,10 @@ const eliminarProductoDelCarrito = (idProducto) => {
 const mostrarCarrito = (pedidoUsuario, contCardCarrito) => {
   contCardCarrito.innerHTML = "";
   if (pedidoUsuario.length > 0) {
+    const cargando_pago = document.querySelector(".loader-container");
+    cargando_pago.style.display = "none";
+    cargando_pago.querySelector("h4").style.display = "none";
+
     // AGREGO LA CANTIDAD DE PRODUCTOS AL MENSAJITO DEL CARRITO
     let cantidadProductos = pedidoUsuario.length.toString();
     const cantidadSpan = document.querySelector(".cantidad-car");
@@ -387,7 +433,8 @@ const mostrarCarrito = (pedidoUsuario, contCardCarrito) => {
 
       // DETERMINA SI EL PRECIO OFERTA TIENE CONTENIDO O ES NULLO Y SE GUARDA EN PRECIOFINAL LA OFERTA O EL ORIGINAL
       //SEGUN SU RESULTADO SIN CONTENIDO O NULL OFERTA O NO NULL
-      const precioFinal = precioOfertaProducto !== null ? precioOfertaProducto : precioProducto;
+      const precioFinal =
+        precioOfertaProducto !== null ? precioOfertaProducto : precioProducto;
 
       // CALCULA PRECIO FINAL DE PRODUCTO CON CANTIDAD
       const totalPrecio = precioFinal * cantidadProducto;
@@ -424,18 +471,19 @@ const mostrarCarrito = (pedidoUsuario, contCardCarrito) => {
                 </div>
                 <div class="cont-precio-car">
                 <div class="cont-precios">
-                    ${precioOfertaProducto !== null
-          ? `
+                    ${
+                      precioOfertaProducto !== null
+                        ? `
                         <span class="precio-anterior">
                             ${precioAnteriorFormateado}
                          </span>`
-          : ""
-        }
+                        : ""
+                    }
                     <span class="precio-anterior pruni">
-                        ${precioFormateado} COP
+                        ${precioFormateado}
                     </span>
                     <span class="valor-precio">
-                        ${totalPrecioFormateado} COP
+                        ${totalPrecioFormateado}
                     </span>
                     </div>
                     <button class="btn-eliminar-producto" data-id="${idProducto}" onclick="eliminarProductoDelCarrito('${idProducto}')">
@@ -453,7 +501,11 @@ const mostrarCarrito = (pedidoUsuario, contCardCarrito) => {
                 </div>
 `;
     contCardCarrito.innerHTML += mensCarrito;
-    document.querySelector('.cantidad-car').style.display = "none";
+    document.querySelector(".cantidad-car").style.display = "none";
+    const cargando_pago = document.querySelector(".loader-container");
+    cargando_pago.style.display = "flex";
+    cargando_pago.querySelector("h4").style.display = "block";
+    cargando_pago.querySelector(".loader").style.display = "none";
   }
 };
 // MODALES FUNCIONES
@@ -519,16 +571,22 @@ const obtenerProductos = () => {
           const altImgProducto = element.images[0].alt;
 
           // FORMATEAR PRECIOS
-          const precioFinal = precioOfertaProducto !== null ? precioOfertaProducto : precioProducto;
+          const precioFinal =
+            precioOfertaProducto !== null
+              ? precioOfertaProducto
+              : precioProducto;
           const precioFormateado = precioFinal.toLocaleString("es-CO", {
             style: "currency",
             currency: "COP",
           });
 
-          const precioAnteriorFormateado = precioProducto.toLocaleString("es-CO", {
-            style: "currency",
-            currency: "COP",
-          });
+          const precioAnteriorFormateado = precioProducto.toLocaleString(
+            "es-CO",
+            {
+              style: "currency",
+              currency: "COP",
+            }
+          );
 
           const productoCard = `
             <div class="card">
@@ -547,14 +605,15 @@ const obtenerProductos = () => {
               <div class="card-footer">
                 <div class="right-footer">
                  <div class="precios-format">
-                  ${precioOfertaProducto !== null
-              ? `
+                  ${
+                    precioOfertaProducto !== null
+                      ? `
                        
                         <span class="pdtoCard">
                             ${precioAnteriorFormateado}
                          </span>`
-              : ""
-            }
+                      : ""
+                  }
                   <span class="text-title precio">${precioFormateado}</span>
                   </div>
                  
@@ -576,7 +635,6 @@ const obtenerProductos = () => {
             </div>
           `;
           contCardP.innerHTML += productoCard;
-
         });
 
         // Asociar eventos de cantidad después de generar las tarjetas
@@ -626,8 +684,10 @@ const configurarEventosCantidad = () => {
 };
 
 const obtenerCategorias = () => {
-  const contCategorias = document.querySelector('.contCategories');
-  const contCategoriasExhibe = document.querySelector('.cont-categorias-exhibicion');
+  const contCategorias = document.querySelector(".contCategories");
+  const contCategoriasExhibe = document.querySelector(
+    ".cont-categorias-exhibicion"
+  );
   const settings_api = {
     url: tunel + "/api/categories",
     method: "GET",
@@ -643,19 +703,15 @@ const obtenerCategorias = () => {
       const categorias = response.data.data;
       if (categorias.length > 0) {
         categorias.forEach((element, i) => {
-          console.log("Categoria " + (i + 1));
           const idCategoria = element._id;
           const nombreCategoria = element.name; // Nombre de la categoria
           const descripcionCategoria = element.description; // Descripcion de la categoria
           const imgCategoria = element.image; // Imagen de la categoria
-          console.log(nombreCategoria, imgCategoria, descripcionCategoria);
-          console.log("-----------------------------------");
 
           var contenidoCat = `
           <option class="categoria-option" value="${idCategoria}">${nombreCategoria}</option>
           `;
           contCategorias.innerHTML += contenidoCat;
-
 
           var exhibeCat = ` 
           <div class="categoria-cont" onclick="simularSeleccionCategoria('${idCategoria}')">
@@ -664,12 +720,11 @@ const obtenerCategorias = () => {
             <span style="display: none;" class="idCategoriaCont">${idCategoria}</span>
           </div>`;
           contCategoriasExhibe.innerHTML += exhibeCat;
-          
-
         });
       }
-      document.querySelector('.style-select').addEventListener('change', filtrarPorCategoria);
-
+      document
+        .querySelector(".style-select")
+        .addEventListener("change", filtrarPorCategoria);
     })
     .fail(function (errorThrown) {
       if (errorThrown.status >= 500) {
@@ -680,3 +735,16 @@ const obtenerCategorias = () => {
       }
     });
 };
+
+const dots = document.querySelectorAll(".dot");
+let currentDot = 0;
+
+function animateDots() {
+  dots.forEach((dot, index) => {
+    dot.style.opacity = index === currentDot ? "1" : "0";
+  });
+
+  currentDot = (currentDot + 1) % dots.length;
+}
+
+setInterval(animateDots, 500);

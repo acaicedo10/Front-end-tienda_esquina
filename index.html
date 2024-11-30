@@ -1,165 +1,195 @@
 <!DOCTYPE html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi Proyecto Frontend</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script
+      src="https://kit.fontawesome.com/590a7c086c.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi Proyecto Frontend</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <script src="https://kit.fontawesome.com/590a7c086c.js" crossorigin="anonymous"></script>
-</head>
+  <body>
+    <div class="cont-estructura">
+      <header class="head-page-in">
+        <div class="cont-filtro-name">
+          <div class="cont-name-empresa" onclick="InicioReload()">
+            <img src="img/logo.png" width="110px" height="110px" alt="" />
+          </div>
+          <div class="cont-filtro">
+            <input
+              class="style-input"
+              type="text"
+              placeholder="Encuentra el producto que necesitas..."
+            />
+            <button class="style-btn-filtro" onclick="filtrarProductos()">
+              <i class="fa-solid fa-magnifying-glass icon"></i>
+            </button>
+          </div>
+          <div class="cont-perfil">
+            <button class="btn-options iconcarrito" onclick="OpenCarShop()">
+              <span class="cantidad-car"> </span>
+              <i class="fa-solid fa-cart-shopping icon"></i>
+            </button>
+            <!-- CONTENEDOR DE CARRITO MODAL -->
 
-<body>
-  <div class="cont-estructura">
-    <header class="head-page-in">
-      <div class="cont-filtro-name">
-        <div class="cont-name-empresa" onclick="InicioReload()">
+            <div class="cont-carrito-modal">
+              <i
+                class="fa-solid fa-circle-xmark Mcarrito"
+                onclick="CloseCarShop()"
+              ></i>
 
-          <img src="img/logo.png" width="110px" height="110px" alt="">
-        </div>
-        <div class="cont-filtro">
-
-          <input class="style-input" type="text" placeholder="Encuentra el producto que necesitas...">
-          <button class="style-btn-filtro" onclick="filtrarProductos()">
-            <i class="fa-solid fa-magnifying-glass icon"></i>
-          </button>
-        </div>
-        <div class="cont-perfil">
-          <button class="btn-options iconcarrito" onclick="OpenCarShop()">
-
-
-            <span class="cantidad-car">
-            
-            </span>
-            <i class="fa-solid fa-cart-shopping icon"></i>
-          </button>
-          <!-- CONTENEDOR DE CARRITO MODAL -->
-
-          <div class="cont-carrito-modal">
-
-            <i class="fa-solid fa-circle-xmark Mcarrito" onclick="CloseCarShop()"></i>
-
-            <div class="cont-car-pag">
-              <div class="cont-result-carrito">
-                <div class="encabezado-car">
-                  <i class="fa-solid fa-basket-shopping canastilla"></i>
-                  <h3>Productos escogidos</h3>
-                  <div class="table-enca-car">
-                    <div class="datos-product">
-                      Datos del producto
+              <div class="cont-car-pag">
+                <div class="cont-result-carrito">
+                  <div class="encabezado-car">
+                    <i class="fa-solid fa-basket-shopping canastilla"></i>
+                    <h3>Productos escogidos</h3>
+                    <div class="table-enca-car">
+                      <div class="datos-product">Datos del producto</div>
+                      <div class="cantidad-product">Cantidad</div>
+                      <div class="precio-product">Precio</div>
                     </div>
-                    <div class="cantidad-product">
-                      Cantidad
-                    </div>
-                    <div class="precio-product">
-                      Precio
+                  </div>
+
+                  <div class="cont-carrito-scroll">
+                    <div class="cont-carrito">
+                      <!-- MENSAJE EN CASO DE QUE NO HAYA REGISTROS EN BD -->
+
+                      <!-- HASTA AQUI CON INNERHTML -->
                     </div>
                   </div>
                 </div>
 
-                <div class="cont-carrito-scroll">
-                  <div class="cont-carrito">
-
-<!-- MENSAJE EN CASO DE QUE NO HAYA REGISTROS EN BD -->
-                    
-
-<!-- HASTA AQUI CON INNERHTML -->
-
+                <div class="cont-pasarela">
+                  <div id="paypal-button-container"></div>
+                  <div class="loader-container">
+                    <div class="loader">
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                    </div>
+                    <h4>
+                      Debes ingresar productos al carito para continuar...
+                    </h4>
                   </div>
                 </div>
               </div>
-
-
-              <div class="cont-pasarela">
-
-              </div>
             </div>
-          </div>
 
-          <!-- BOTONES CONDICIONALES >> -->
-          <button class="btn-options OpnLog" style="display: none;" onclick="OpenContLogin()">
-            <i class="fa-solid fa-right-to-bracket icon"></i>
-          </button>
+            <!-- BOTONES CONDICIONALES >> -->
+            <button
+              class="btn-options OpnLog"
+              style="display: none"
+              onclick="OpenContLogin()"
+            >
+              <i class="fa-solid fa-right-to-bracket icon"></i>
+            </button>
 
-          <button class="btn-options PrfIcon" onclick="OpenUserOptions()">
-            <i class="fa-solid fa-user icon"></i>
-          </button>
+            <button class="btn-options PrfIcon" onclick="OpenUserOptions()">
+              <i class="fa-solid fa-user icon"></i>
+            </button>
 
-          <!-- CONTENEDOR DE PERFIL -->
-          <div class="cont-perfil-user">
-
-            <i class="fa-solid fa-circle-xmark Euser" onclick="CloseUserOptions()"></i>
-            <div class="cont-data-user">
+            <!-- CONTENEDOR DE PERFIL -->
+            <div class="cont-perfil-user">
+              <i
+                class="fa-solid fa-circle-xmark Euser"
+                onclick="CloseUserOptions()"
+              ></i>
+              <div class="cont-data-user"></div>
+              <button class="btn-mdl-user" type="button">
+                Ayuda y soporte <i class="fa-solid fa-circle-info"></i>
+              </button>
+              <button
+                class="btn-mdl-user contra"
+                onclick="cerrarSesion()"
+                type="button"
+              >
+                Cerrar sesion <i class="fa-solid fa-right-from-bracket"></i>
+              </button>
             </div>
-            <button class="btn-mdl-user" type="button">Ayuda y soporte <i class="fa-solid fa-circle-info"></i></button>
-            <button class="btn-mdl-user contra" onclick="cerrarSesion()" type="button">Cerrar sesion
-              <i class="fa-solid fa-right-from-bracket"></i></button>
+            <!-- BOTONES CONDICIONALES << -->
           </div>
-          <!-- BOTONES CONDICIONALES << -->
         </div>
-
-      </div>
-      <div class="cont-menu">
-        <div class="btn-menu-option" onclick="resetFiltro()">
-          Todo
+        <div class="cont-menu">
+          <div
+            class="btn-menu-option"
+            data-id="resetFiltro"
+            onclick="resetFiltro('resetFiltro')"
+          >
+            Todo
+          </div>
+          <select class="style-select contCategories" name="" id="">
+            <option value="0" disabled selected>Filtrar Categorias</option>
+          </select>
+          <div
+            class="btn-menu-option"
+            data-id="filtrarOfertas"
+            onclick="filtrarOfertas('filtrarOfertas')"
+          >
+            Ofertas
+          </div>
+          <div
+            class="btn-menu-option"
+            data-id="mostrarCategorias"
+            onclick="mostrarCategorias('mostrarCategorias')"
+          >
+            Categorias
+          </div>
         </div>
-        <select class="style-select contCategories" name="" id="">
-          <option value="0" disabled selected>Filtrar Categorias</option>
-          
-
-        </select>
-        <div class="btn-menu-option" onclick="filtrarOfertas()">
-          Ofertas
+      </header>
+      <main class="cont-options-select">
+        <div class="cont-option">
+          <div class="cont-ajustable"></div>
+          <div class="cont-categorias-exhibicion"></div>
         </div>
-        <div class="btn-menu-option" onclick="mostrarCategorias()">
-          Categorias
+      </main>
+    </div>
+
+    <!-- Modal login -->
+    <div class="cont-login-user">
+      <div class="cont-login">
+        <div class="container">
+          <div class="heading">
+            Iniciar Sesión
+            <i class="fa-solid fa-circle-xmark ekis" onclick="CloseLogin()"></i>
+          </div>
+          <form action="" class="form" onsubmit="return iniciarSesion(event)">
+            <input
+              required=""
+              class="input"
+              type="email"
+              name="email_login"
+              id="email"
+              placeholder="Correo electrónico"
+            />
+            <input
+              required=""
+              class="input"
+              type="password"
+              name="password_login"
+              id="password"
+              placeholder="Contraseña"
+            />
+            <span class="forgot-password"
+              ><a href="recuperar_contraseña.html"
+                >¿Olvidaste tu contraseña ?</a
+              ></span
+            >
+            <input class="login-button" type="submit" value="Iniciar" />
+          </form>
+          <span class="agreement"
+            ><a href="registrarse.html">Crear usuario</a></span
+          >
         </div>
-      </div>
-    </header>
-    <main class="cont-options-select">
-
-
-      <div class="cont-option">
-        <div class="cont-ajustable">
-
-          
-
-        </div>
-        <div class="cont-categorias-exhibicion">
-
-
-        </div>
-
-      </div>
-
-    </main>
-
-  </div>
-
-
-  <!-- Modal login -->
-  <div class="cont-login-user">
-    <div class="cont-login">
-
-      <div class="container">
-
-        <div class="heading">Iniciar Sesión
-          <i class="fa-solid fa-circle-xmark ekis" onclick="CloseLogin()"></i>
-        </div>
-        <form action="" class="form" onsubmit="return iniciarSesion(event)">
-          <input required="" class="input" type="email" name="email_login" id="email" placeholder="Correo electrónico">
-          <input required="" class="input" type="password" name="password_login" id="password" placeholder="Contraseña">
-          <span class="forgot-password"><a href="recuperar_contraseña.html">¿Olvidaste tu contraseña ?</a></span>
-          <input class="login-button" type="submit"  value="Iniciar">
-        </form>
-        <span class="agreement"><a href="registrarse.html">Crear usuario</a></span>
       </div>
     </div>
-  </div>
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="js/alerta.js"></script>
-  <script src="js/Tunel.js"></script>
-  <script src="js/IndexScripts.js"></script>
-</body>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/alerta.js"></script>
+    <script src="js/Tunel.js"></script>
+    <script src="js/IndexScripts.js"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AdM1yua40qhxiArKJC5k59L3J8fNx8NqsgEfQAV8Vclr5f_LFKYOHLVteCb9YHsGwuxQrPssTO9aQXDO&currency=USD"></script>
+    <script src="js/ordenarProductos.js"></script>
+  </body>
 </html>
