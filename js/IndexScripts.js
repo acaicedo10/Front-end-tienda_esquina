@@ -314,6 +314,7 @@ const mostrarCarrito = (pedidoUsuario, contCardCarrito) => {
                 </div>
 `;
     contCardCarrito.innerHTML += mensCarrito;
+    document.querySelector('.cantidad-car').style.display = "none";
   }
 };
 // MODALES FUNCIONES

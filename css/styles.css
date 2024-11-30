@@ -580,18 +580,19 @@ svg {
   align-items: center;
   position: absolute;
   z-index: 2;
-  width: 58em;
+  width: 60em; /* Aumenta aquí el ancho */
   gap: 1em;
   padding: 10px;
   background-color: transparent;
   border: 3px solid var(--color-2);
   backdrop-filter: blur(7px);
   box-shadow: var(--sombra);
-  margin-left: -73em;
+  margin-left: -73em; /* Este ajuste sigue funcionando dinámicamente */
   margin-top: 1em;
   border-radius: 20px 0px 20px 20px;
   height: max-content;
 }
+
 .Mcarrito {
   position: absolute;
   font-size: 26px;
