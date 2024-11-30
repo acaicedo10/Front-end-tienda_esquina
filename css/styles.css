@@ -766,3 +766,17 @@ svg {
   border-radius: 10px;
   border: 1px solid;
 }
+
+.btn-eliminar-producto {
+  background-color: transparent;
+  border: none;
+  transition: 0.2s ease;
+}
+
+.btn-eliminar-producto:hover {
+  transform: scale(1.1);
+}
+
+.btn-eliminar-producto:hover i{
+  color: var(--color-3);
+}
